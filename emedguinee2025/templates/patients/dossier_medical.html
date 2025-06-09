@@ -1,0 +1,457 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- En-tête principal -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="header-section">
+                <h2 class="main-title">Mon Dossier Médical</h2>
+                <p class="subtitle">Consultez vos informations médicales en toute sécurité</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Informations personnelles -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">👤</i>
+                        Informations personnelles
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <span class="label">Nom complet :</span>
+                                <span class="value">{{ user.get_full_name|default:"Non renseigné" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Date de naissance :</span>
+                                <span class="value">{{ user.date_naissance|date:"d/m/Y"|default:"Non renseignée" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <span class="label">Email :</span>
+                                <span class="value">{{ user.email }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Téléphone :</span>
+                                <span class="value">{{ user.telephone|default:"Non renseigné" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Allergies -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">⚠️</i>
+                        Allergies connues
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="medical-content">
+                        <p class="placeholder-text">Aucune allergie renseignée</p>
+                        <div class="add-info-btn">
+                            <a href="#" class="btn-link">+ Ajouter une allergie</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Antécédents -->
+        <div class="col-md-6">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">📋</i>
+                        Antécédents médicaux
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="medical-content">
+                        <p class="placeholder-text">Aucun antécédent renseigné</p>
+                        <div class="add-info-btn">
+                            <a href="#" class="btn-link">+ Ajouter un antécédent</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Traitements en cours -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">💊</i>
+                        Traitements en cours
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="medical-content">
+                        <p class="placeholder-text">Aucun traitement en cours</p>
+                        <div class="add-info-btn">
+                            <a href="#" class="btn-link">+ Ajouter un traitement</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Consultations récentes -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">🩺</i>
+                        Consultations récentes
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="medical-content">
+                        <p class="placeholder-text">Aucune consultation récente</p>
+                        <div class="add-info-btn">
+                            <a href="#" class="btn-link">Voir l'historique complet</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="quick-actions">
+                <h5 class="actions-title">Actions rapides</h5>
+                <div class="actions-grid">
+                    <a href="#" class="action-btn">
+                        <i class="action-icon">📄</i>
+                        <span>Télécharger mon dossier</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="action-icon">✏️</i>
+                        <span>Modifier mes informations</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="action-icon">📅</i>
+                        <span>Prendre un rendez-vous</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="action-icon">📞</i>
+                        <span>Contacter un médecin</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Variables pour cohérence avec la palette bleu ciel uniquement */
+:root {
+    --primary-blue: #0ea5e9;
+    --light-blue: #38bdf8;
+    --bg-blue: #e0f2ff;
+    --card-blue: #f0f9ff;
+    --border-blue: #bae6fd;
+    --text-blue: #0284c7;
+    --hover-blue: #0891b2;
+    --gradient-blue: linear-gradient(135deg, #e0f2ff 0%, #f0f9ff 100%);
+    --shadow-blue: 0 4px 20px rgba(14, 165, 233, 0.1);
+    --shadow-hover: 0 8px 30px rgba(14, 165, 233, 0.15);
+}
+
+/* Fond de la page */
+body {
+    background: var(--gradient-blue);
+    min-height: 100vh;
+}
+
+/* En-tête principal */
+.header-section {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-blue);
+    border: 1px solid var(--border-blue);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--light-blue));
+}
+
+.main-title {
+    color: var(--primary-blue) !important;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    color: var(--text-blue);
+    font-size: 16px;
+    margin-bottom: 0;
+    opacity: 0.8;
+}
+
+/* Cartes médicales */
+.medical-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow-blue);
+    border: 1px solid var(--border-blue);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.medical-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+    background: var(--card-blue);
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-blue);
+}
+
+.card-title {
+    color: var(--primary-blue);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.card-title .icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* Informations personnelles */
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item .label {
+    font-weight: 600;
+    color: var(--text-blue);
+    font-size: 14px;
+}
+
+.info-item .value {
+    color: var(--primary-blue);
+    font-weight: 500;
+}
+
+/* Contenu médical */
+.medical-content {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.placeholder-text {
+    color: #94a3b8;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.add-info-btn {
+    margin-top: 15px;
+}
+
+.btn-link {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.btn-link:hover {
+    color: var(--hover-blue);
+    text-decoration: underline;
+}
+
+/* Actions rapides */
+.quick-actions {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-blue);
+    border: 1px solid var(--border-blue);
+}
+
+.actions-title {
+    color: var(--primary-blue);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 20px;
+    background: var(--card-blue);
+    border: 2px solid var(--border-blue);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-blue);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-blue);
+    background: white;
+    box-shadow: var(--shadow-hover);
+    color: var(--primary-blue);
+    text-decoration: none;
+}
+
+.action-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.action-btn span {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .main-title {
+        font-size: 26px;
+    }
+    
+    .header-section {
+        padding: 30px 20px;
+        margin: 0 10px 20px 10px;
+    }
+    
+    .medical-card {
+        margin: 0 10px 20px 10px;
+    }
+    
+    .quick-actions {
+        margin: 0 10px;
+    }
+    
+    .actions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .action-btn {
+        padding: 20px 15px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .info-item .value {
+        margin-top: 5px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left;
+    }
+    
+    .action-icon {
+        margin-right: 15px;
+        margin-bottom: 0;
+        font-size: 24px;
+    }
+}
+
+/* Animation d'entrée */
+.medical-card {
+    animation: slideInUp 0.6s ease-out both;
+}
+
+.medical-card:nth-child(1) { animation-delay: 0.1s; }
+.medical-card:nth-child(2) { animation-delay: 0.2s; }
+.medical-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+{% endblock %}

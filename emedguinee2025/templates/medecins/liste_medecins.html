@@ -1,0 +1,421 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des médecins - e_medGuinée</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Variables CSS pour cohérence avec la palette définie */
+        :root {
+            --bg-primary: #e0f2ff;
+            --btn-primary: #0ea5e9;
+            --btn-hover: #0284c7;
+            --title-primary: #1e3a8a;
+            --title-secondary: #0ea5e9;
+            --card-bg: #ffffff;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --shadow-light: 0 4px 16px rgba(30, 64, 175, 0.08);
+            --shadow-medium: 0 8px 25px rgba(30, 64, 175, 0.12);
+            --shadow-hover: 0 12px 35px rgba(30, 64, 175, 0.15);
+            --avatar-bg: #dbeafe;
+            --border-accent: #bfdbfe;
+            --gradient-bg: linear-gradient(135deg, #e0f2ff 0%, #f0f9ff 50%, #e0f7fa 100%);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--gradient-bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            color: var(--title-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Fond avec pattern subtil */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(14, 165, 233, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(30, 58, 138, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 30px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--title-primary);
+            letter-spacing: -0.5px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--btn-primary), var(--title-secondary));
+            border-radius: 2px;
+        }
+
+        /* Sous-titre optionnel */
+        h1::before {
+            content: 'Découvrez notre équipe de professionnels de santé';
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            letter-spacing: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 80px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-light);
+            padding: 35px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid rgba(30, 64, 175, 0.05);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--btn-primary), var(--title-secondary));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(14, 165, 233, 0.1);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--avatar-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 4px solid rgba(14, 165, 233, 0.1);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .card:hover .avatar {
+            border-color: var(--btn-primary);
+            transform: scale(1.05);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .card:hover .avatar img {
+            transform: scale(1.1);
+        }
+
+        /* Effet de badge pour l'avatar sans image */
+        .avatar:not(:has(img))::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .info {
+            text-align: center;
+            margin-bottom: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info h3 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--title-primary);
+            letter-spacing: -0.3px;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover .info h3 {
+            color: var(--title-secondary);
+        }
+
+        .info p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 500;
+            text-transform: capitalize;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid var(--border-accent);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--btn-primary) 0%, #06b6d4 100%);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.25);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--btn-hover) 0%, #0891b2 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Message d'absence de médecins */
+        .no-doctors {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-top: 80px;
+            padding: 60px 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-light);
+            border: 2px dashed var(--border-accent);
+        }
+
+        .no-doctors::before {
+            content: '🏥';
+            display: block;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 40px auto;
+                padding: 0 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+                margin-bottom: 15px;
+            }
+
+            h1::before {
+                font-size: 14px;
+                bottom: -30px;
+                white-space: normal;
+                max-width: 280px;
+                line-height: 1.4;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                margin-top: 70px;
+            }
+
+            .card {
+                padding: 30px 25px;
+                margin-bottom: 0;
+            }
+
+            .avatar {
+                width: 85px;
+                height: 85px;
+                font-size: 32px;
+                margin-bottom: 20px;
+            }
+
+            .info h3 {
+                font-size: 20px;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h1::before {
+                font-size: 13px;
+                max-width: 250px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+            .grid {
+                margin-top: 60px;
+            }
+        }
+
+        /* Animation staggered pour les cartes */
+        .card {
+            animation: slideInCard 0.6s ease-out both;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes slideInCard {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nos médecins disponibles</h1>
+        {% if medecins %}
+            <div class="grid">
+                {% for medecin in medecins %}
+                    <div class="card">
+                        <div class="avatar">
+                            {% if medecin.avatar %}
+                                <img src="{{ medecin.avatar.url }}" alt="Dr. {{ medecin.get_full_name }}">
+                            {% else %}
+                                👨‍⚕️
+                            {% endif %}
+                        </div>
+                        <div class="info">
+                            <h3>Dr. {{ medecin.get_full_name }}</h3>
+                            <p>{{ medecin.specialite|default:"Médecine générale" }}</p>
+                        </div>
+                        <a href="{% url 'prise_rdv_patient' %}?medecin={{ medecin.id }}" class="btn">Prendre rendez-vous</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-doctors">Aucun médecin disponible pour le moment.</div>
+        {% endif %}
+    </div>
+</body>
+</html>

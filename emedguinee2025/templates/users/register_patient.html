@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to right, #e0f2ff, #f8fbff);
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: 80px auto;
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-container h2 {
+        text-align: center;
+        color: #1e3a8a;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .btn-submit {
+        background-color: #0ea5e9;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .btn-submit:hover {
+        background-color: #0284c7;
+    }
+
+    label {
+        font-weight: 500;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Inscription Patient</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3">
+                <label>
+                    {% if field.name == "username" %}Nom d’utilisateur
+                    {% elif field.name == "email" %}Adresse email
+                    {% elif field.name == "first_name" %}Prénom
+                    {% elif field.name == "last_name" %}Nom
+                    {% elif field.name == "password1" %}Mot de passe
+                    {% elif field.name == "password2" %}Confirmation du mot de passe
+                    {% else %}{{ field.label }}
+                    {% endif %}
+                </label>
+                
+                {% render_field field class="form-control" %}
+                {% if field.errors %}
+                    <div class="text-danger small">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-submit">Créer mon compte</button>
+    </form>
+</div>
+{% endblock %}

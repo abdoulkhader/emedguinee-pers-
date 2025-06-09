@@ -1,0 +1,424 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes rendez-vous - e_medGuinée</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f2ff 0%, #f0f9ff 50%, #e0f2ff 100%);
+            display: flex;
+            min-height: 100vh;
+            color: #1e3a8a;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #87CEEB; /* Solid sky blue */
+            color: #2c5282;
+            padding: 0;
+            position: fixed;
+            height: 100%;
+            box-shadow: 4px 0 20px rgba(135, 206, 235, 0.15);
+            border-right: 1px solid rgba(176, 224, 230, 0.2);
+        }
+
+        .sidebar-header {
+            padding: 32px 24px 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 300;
+            color: #e6f4f7;
+        }
+
+        .sidebar-nav {
+            padding-top: 16px;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 16px 24px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+            font-weight: 400;
+            position: relative;
+            font-size: 15px;
+        }
+
+        .sidebar-nav a i {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .sidebar-nav a:hover {
+            background: linear-gradient(90deg, rgba(255,255,255,0.12) 0%, rgba(176, 224, 230, 0.15) 100%);
+            border-left: 3px solid #b0e0e6;
+            transform: translateX(2px);
+            color: #e6f4f7;
+            padding-left: 22px;
+        }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(90deg, rgba(176, 224, 230, 0.2) 0%, rgba(255,255,255,0.1) 100%);
+            border-left: 3px solid #b0e0e6;
+            font-weight: 500;
+            color: #f0f8fa;
+            padding-left: 22px;
+        }
+
+        .sidebar-nav a.active::before {
+            content: '';
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: #b0e0e6;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(176, 224, 230, 0.6);
+        }
+
+        .sidebar-nav form button {
+            display: block;
+            width: 100%;
+            padding: 16px 24px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: left;
+            font-size: 15px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+            font-weight: 400;
+        }
+
+        .sidebar-nav form button:hover {
+            background: linear-gradient(90deg, rgba(255,255,255,0.12) 0%, rgba(176, 224, 230, 0.15) 100%);
+            border-left: 3px solid #b0e0e6;
+            transform: translateX(2px);
+            color: #e6f4f7;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 48px 40px;
+            width: calc(100% - 280px);
+            background: transparent;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e3a8a;
+            letter-spacing: -1px;
+            text-shadow: 0 1px 2px rgba(30, 58, 138, 0.1);
+            margin: 0 0 32px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1::before {
+            content: '📅';
+            font-size: 28px;
+            filter: drop-shadow(0 2px 4px rgba(30, 58, 138, 0.1));
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 32px;
+            overflow-x: auto;
+            box-shadow: 
+                0 10px 40px rgba(30, 58, 138, 0.08),
+                0 4px 16px rgba(14, 165, 233, 0.05),
+                0 1px 4px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .table-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3a8a 0%, #0ea5e9 50%, #1e3a8a 100%);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 700px;
+            margin-top: 8px;
+        }
+
+        th, td {
+            padding: 18px 16px;
+            text-align: left;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.08);
+        }
+
+        th {
+            background: linear-gradient(135deg, rgba(240, 249, 255, 0.8) 0%, rgba(224, 242, 255, 0.6) 100%);
+            color: #1e3a8a;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background: linear-gradient(135deg, rgba(240, 249, 255, 0.7) 0%, rgba(224, 242, 255, 0.4) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.08);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td {
+            color: #1e40af;
+            font-weight: 400;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .badge-valide {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+            border-color: rgba(22, 163, 74, 0.2);
+        }
+
+        .badge-valide:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+        }
+
+        .badge-attente {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #6b7280;
+            border-color: rgba(107, 114, 128, 0.2);
+        }
+
+        .badge-attente:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);
+        }
+
+        .no-appointments {
+            text-align: center;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 
+                0 10px 40px rgba(30, 58, 138, 0.08),
+                0 4px 16px rgba(14, 165, 233, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            color: #6b7280;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 24px 16px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            h1 {
+                font-size: 28px;
+                margin-bottom: 24px;
+            }
+
+            .table-container {
+                padding: 20px 16px;
+                border-radius: 16px;
+            }
+
+            table {
+                min-width: 100%;
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            th {
+                font-size: 12px;
+            }
+
+            .badge {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            .no-appointments {
+                padding: 40px 20px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 20px 12px;
+            }
+
+            .table-container {
+                padding: 16px 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            th, td {
+                padding: 10px 6px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>Bonjour {{ request.user.first_name|default:request.user.username }}</h2>
+        <p style="font-weight:300;">Patient connecté</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'patient_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a>
+        <a href="{% url 'mes_rendez_vous' %}" class="active"><i class="fas fa-calendar-check"></i> Mes rendez-vous</a>
+        <a href="{% url 'profil_patient' %}"><i class="fas fa-user"></i> Mon profil</a>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">🔓 Déconnexion</button>
+        </form>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+    <h1>Mes rendez-vous</h1>
+
+    {% if rendez_vous %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Motif</th>
+                        <th>Médecin</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rdv in rendez_vous %}
+                        <tr>
+                            <td>{{ rdv.date|date:"d M Y" }}</td>
+                            <td>{{ rdv.heure|time:"H:i" }}</td>
+                            <td>{{ rdv.motif|default:"Consultation" }}</td>
+                            <td>
+                                {% if rdv.medecin %}
+                                    Dr. {{ rdv.medecin.user.get_full_name }}
+                                {% else %}
+                                    Non assigné
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if rdv.est_valide %}
+                                    <span class="badge badge-valide">Validé</span>
+                                {% else %}
+                                    <span class="badge badge-attente">En attente</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+    <div class="no-appointments">
+        <i class="fas fa-calendar-times" style="font-size: 38px; margin-bottom: 12px; color: #94a3b8;"></i>
+        <p style="margin: 0; font-size: 16px; color: #475569;">
+            Aucun rendez-vous trouvé pour l'instant.<br>
+            Vous pouvez en prendre un depuis le tableau de bord.
+        </p>
+    </div>
+    {% endif %}
+</main>
+
+</body>
+</html>

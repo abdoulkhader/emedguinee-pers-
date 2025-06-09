@@ -1,0 +1,165 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #e0f2ff;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #0ea5e9;
+    padding: 15px 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.nav-links a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #bae6fd;
+}
+
+/* CONTENU PRINCIPAL */
+.main-container {
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* BIENVENUE */
+.welcome-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.welcome-text {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* CARTES SECTIONS */
+.info-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.card-title {
+    font-size: 1.3rem;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* LISTE RENDEZ-VOUS */
+.item-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+}
+
+.item-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+    color: #333;
+}
+
+/* MESSAGE VIDE */
+.empty-message {
+    color: #475569;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* BOUTON */
+.button-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #0ea5e9;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0284c7;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .nav-links a {
+        margin: 8px 0;
+    }
+
+    .welcome-text {
+        font-size: 1.2rem;
+    }
+}
+.sidebar {
+    width: 280px;
+    background-color: #e0f2ff;
+color: #1e3a8a;
+    padding: 0;
+    position: fixed;
+    height: 100%;
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 15px rgba(135, 206, 235, 0.3);
+    z-index: 1000;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-content {
+    margin-left: 280px;
+    padding: 30px 40px;
+    width: calc(100% - 280px);
+    min-height: 100vh;
+}

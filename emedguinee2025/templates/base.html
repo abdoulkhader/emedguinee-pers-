@@ -1,0 +1,34 @@
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>e_medGuinée</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- 🔷 NAVIGATION BLEU CIEL GÉNÉRALISÉE -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">e_medGuinée</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Accueil</a>
+            <a href="#">À propos</a>
+            <a href="{% url 'login' %}">Connexion</a>
+            <a href="{% url 'choix_inscription' %}">Inscription</a>
+        </div>
+    </div>
+</nav>
+
+
+<main class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</main>
+
+</body>
+</html>
