@@ -62,3 +62,17 @@ class ModifierProfilPatientForm(forms.ModelForm):
             self.user.save()
             patient.save()
         return patient
+
+
+from django import forms
+from .models import MessagePatient
+
+class ContactMedecinForm(forms.ModelForm):
+    class Meta:
+        model = MessagePatient
+        fields = ['medecin', 'sujet', 'message']
+        widgets = {
+            'medecin': forms.Select(attrs={'class': 'form-control'}),
+            'sujet': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Objet du message'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Votre message ici...'}),
+        }

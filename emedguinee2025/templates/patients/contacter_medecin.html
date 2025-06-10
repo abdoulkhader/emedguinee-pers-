@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- En-tête principal -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="header-section">
+                <h2 class="main-title">Contacter un médecin</h2>
+                <p class="subtitle">Envoyez votre message à un professionnel de santé</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulaire de contact -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="contact-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">💬</i>
+                        Votre message
+                    </h4>
+                </div>
+                
+                <div class="card-body">
+                    <form method="post" class="contact-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-content">
+                            {{ form.as_p }}
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">
+                                <i class="submit-icon">📤</i>
+                                <span>Envoyer le message</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informations utiles -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="info-section">
+                <h5 class="info-title">Informations importantes</h5>
+                <div class="info-grid">
+                    <div class="info-item-box">
+                        <i class="info-icon">⏰</i>
+                        <h6>Délai de réponse</h6>
+                        <p>Nous vous répondrons dans les 24-48h</p>
+                    </div>
+                    <div class="info-item-box">
+                        <i class="info-icon">🔒</i>
+                        <h6>Confidentialité</h6>
+                        <p>Vos données sont protégées et sécurisées</p>
+                    </div>
+                    <div class="info-item-box">
+                        <i class="info-icon">🚨</i>
+                        <h6>Urgence</h6>
+                        <p>En cas d'urgence, contactez le 15</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Variables pour cohérence avec la palette bleu ciel */
+:root {
+    --primary-blue: #0ea5e9;
+    --light-blue: #38bdf8;
+    --bg-blue: #e0f2ff;
+    --card-blue: #f0f9ff;
+    --border-blue: #bae6fd;
+    --text-blue: #0284c7;
+    --hover-blue: #0891b2;
+    --gradient-blue: linear-gradient(135deg, #e0f2ff 0%, #f0f9ff 100%);
+    --shadow-blue: 0 4px 20px rgba(14, 165, 233, 0.1);
+    --shadow-hover: 0 8px 30px rgba(14, 165, 233, 0.15);
+    --success-green: #10b981;
+    --warning-orange: #f59e0b;
+    --danger-red: #ef4444;
+}
+
+/* Fond de la page */
+body {
+    background: var(--gradient-blue);
+    min-height: 100vh;
+}
+
+/* En-tête principal */
+.header-section {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-blue);
+    border: 1px solid var(--border-blue);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--light-blue));
+}
+
+.main-title {
+    color: var(--primary-blue) !important;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    color: var(--text-blue);
+    font-size: 16px;
+    margin-bottom: 0;
+    opacity: 0.8;
+}
+
+/* Carte de contact */
+.contact-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow-blue);
+    border: 1px solid var(--border-blue);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+    background: var(--card-blue);
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-blue);
+}
+
+.card-title {
+    color: var(--primary-blue);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.card-title .icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+/* Formulaire */
+.contact-form {
+    width: 100%;
+}
+
+.form-content {
+    margin-bottom: 30px;
+}
+
+/* Styles pour les champs du formulaire Django */
+.form-content p {
+    margin-bottom: 20px;
+}
+
+.form-content label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-blue);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-content input,
+.form-content textarea,
+.form-content select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-blue);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+    color: var(--text-blue);
+}
+
+.form-content input:focus,
+.form-content textarea:focus,
+.form-content select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.form-content textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Messages d'erreur */
+.form-content .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+}
+
+.form-content .errorlist li {
+    color: var(--danger-red);
+    font-size: 12px;
+    background: #fef2f2;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border-left: 3px solid var(--danger-red);
+}
+
+/* Bouton de soumission */
+.form-actions {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);
+}
+
+.btn-submit:hover {
+    background: var(--hover-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+.submit-icon {
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+/* Section d'informations */
+.info-section {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-blue);
+    border: 1px solid var(--border-blue);
+}
+
+.info-title {
+    color: var(--primary-blue);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.info-item-box {
+    text-align: center;
+    padding: 20px;
+    background: var(--bg-blue);
+    border-radius: 12px;
+    border: 1px solid var(--border-blue);
+    transition: all 0.3s ease;
+}
+
+.info-item-box:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-blue);
+}
+
+.info-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.info-item-box h6 {
+    color: var(--primary-blue);
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.info-item-box p {
+    color: var(--text-blue);
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .main-title {
+        font-size: 26px;
+    }
+    
+    .header-section {
+        padding: 30px 20px;
+        margin: 0 10px 20px 10px;
+    }
+    
+    .contact-card {
+        margin: 0 10px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .info-section {
+        margin: 20px 10px 0 10px;
+        padding: 20px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .btn-submit {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-item-box {
+        padding: 15px;
+    }
+    
+    .form-content input,
+    .form-content textarea,
+    .form-content select {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Animation d'entrée */
+.contact-card {
+    animation: slideInUp 0.6s ease-out both;
+}
+
+.info-section {
+    animation: slideInUp 0.6s ease-out both;
+    animation-delay: 0.2s;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* États de focus améliorés */
+.form-content input:focus,
+.form-content textarea:focus,
+.form-content select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* Placeholder styling */
+.form-content input::placeholder,
+.form-content textarea::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+/* Amélioration de l'accessibilité */
+.btn-submit:focus {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+</style>
+{% endblock %}

@@ -22,6 +22,7 @@
                         Informations personnelles
                     </h4>
                 </div>
+                
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -50,7 +51,43 @@
         </div>
     </div>
 
-    <!-- Section Allergies -->
+    <!-- Section Informations administratives -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">📁</i>
+                        Informations administratives
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="info-item">
+                                <span class="label">N° dossier médical :</span>
+                                <span class="value">{{ patient.numero_dossier|default:"Non attribué" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-item">
+                                <span class="label">Médecin référent :</span>
+                                <span class="value">{{ dossier.medecin_referent.user.get_full_name|default:"Non désigné" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-item">
+                                <span class="label">Date de création :</span>
+                                <span class="value">{{ patient.date_creation|date:"d/m/Y"|default:"Non renseignée" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Allergies et Antécédents -->
     <div class="row mb-4">
         <div class="col-md-6">
             <div class="medical-card">
@@ -61,17 +98,24 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <div class="medical-content">
-                        <p class="placeholder-text">Aucune allergie renseignée</p>
-                        <div class="add-info-btn">
-                            <a href="#" class="btn-link">+ Ajouter une allergie</a>
+                    <div class="medical-list">
+                        <div class="list-item">
+                            <span class="list-label">Médicamenteuses :</span>
+                            <span class="list-value">{{ dossier.allergie_medicament|default:"Aucune" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Alimentaires :</span>
+                            <span class="list-value">{{ patient.allergie_alimentaire|default:"Aucune" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Autres :</span>
+                            <span class="list-value">{{ patient.allergie_autre|default:"Aucune" }}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Section Antécédents -->
         <div class="col-md-6">
             <div class="medical-card">
                 <div class="card-header">
@@ -81,10 +125,14 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <div class="medical-content">
-                        <p class="placeholder-text">Aucun antécédent renseigné</p>
-                        <div class="add-info-btn">
-                            <a href="#" class="btn-link">+ Ajouter un antécédent</a>
+                    <div class="medical-list">
+                        <div class="list-item">
+                            <span class="list-label">Maladies chroniques :</span>
+                            <span class="list-value">{{ patient.maladies_chroniques|default:"Aucune" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Chirurgies :</span>
+                            <span class="list-value">{{ patient.chirurgies|default:"Aucune" }}</span>
                         </div>
                     </div>
                 </div>
@@ -92,9 +140,9 @@
         </div>
     </div>
 
-    <!-- Section Traitements en cours -->
+    <!-- Section Traitements et Vaccins -->
     <div class="row mb-4">
-        <div class="col-12">
+        <div class="col-md-6">
             <div class="medical-card">
                 <div class="card-header">
                     <h4 class="card-title">
@@ -103,10 +151,130 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <div class="medical-content">
-                        <p class="placeholder-text">Aucun traitement en cours</p>
-                        <div class="add-info-btn">
-                            <a href="#" class="btn-link">+ Ajouter un traitement</a>
+                    <div class="medical-list">
+                        <div class="list-item">
+                            <span class="list-label">Médicaments :</span>
+                            <span class="list-value">{{ patient.traitement_medicament|default:"Aucun" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Posologie :</span>
+                            <span class="list-value">{{ patient.traitement_posologie|default:"Non renseignée" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">💉</i>
+                        Vaccinations
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="medical-list">
+                        <div class="list-item">
+                            <span class="list-label">COVID-19 :</span>
+                            <span class="list-value">{{ dossier.vaccin_covid|default:"Non renseigné" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Hépatite B :</span>
+                            <span class="list-value">{{ dossier.vaccin_hepatite_b|default:"Non renseigné" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Groupe sanguin et Constantes vitales -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">🩸</i>
+                        Groupe sanguin
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="blood-group-display">
+                        <div class="blood-info">
+                            <span class="blood-label">Groupe :</span>
+                            <span class="blood-value">{{ dossier.groupe_sanguin|default:"?" }}</span>
+                        </div>
+                        <div class="blood-info">
+                            <span class="blood-label">Rhésus :</span>
+                            <span class="blood-value">{{ dossier.rhesus|default:"?" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">❤️</i>
+                        Constantes vitales
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="medical-list">
+                        <div class="list-item">
+                            <span class="list-label">Tension artérielle :</span>
+                            <span class="list-value">{{ patient.tension_arterielle|default:"Non renseignée" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Fréquence cardiaque :</span>
+                            <span class="list-value">{{ patient.frequence_cardiaque|default:"Non renseignée" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Température :</span>
+                            <span class="list-value">{{ patient.temperature|default:"Non renseignée" }}</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Poids :</span>
+                            <span class="list-value">{{ patient.poids|default:"Non renseigné" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Contact d'urgence -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="medical-card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="icon">📞</i>
+                        Contact d'urgence
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="info-item">
+                                <span class="label">Nom :</span>
+                                <span class="value">{{ patient.contact_urgence_nom|default:"Non renseigné" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-item">
+                                <span class="label">Téléphone :</span>
+                                <span class="value">{{ patient.contact_urgence_telephone|default:"Non renseigné" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-item">
+                                <span class="label">Lien :</span>
+                                <span class="value">{{ patient.contact_urgence_lien|default:"Non renseigné" }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,7 +296,7 @@
                     <div class="medical-content">
                         <p class="placeholder-text">Aucune consultation récente</p>
                         <div class="add-info-btn">
-                            <a href="#" class="btn-link">Voir l'historique complet</a>
+                            <a href="{% url 'historique_consultations' %}" class="btn-link">Voir l'historique complet</a>
                         </div>
                     </div>
                 </div>
@@ -142,19 +310,11 @@
             <div class="quick-actions">
                 <h5 class="actions-title">Actions rapides</h5>
                 <div class="actions-grid">
-                    <a href="#" class="action-btn">
+                    <a href="{% url 'telecharger_dossier' %}" class="action-btn">
                         <i class="action-icon">📄</i>
                         <span>Télécharger mon dossier</span>
                     </a>
-                    <a href="#" class="action-btn">
-                        <i class="action-icon">✏️</i>
-                        <span>Modifier mes informations</span>
-                    </a>
-                    <a href="#" class="action-btn">
-                        <i class="action-icon">📅</i>
-                        <span>Prendre un rendez-vous</span>
-                    </a>
-                    <a href="#" class="action-btn">
+                    <a href="{% url 'contacter_medecin' %}" class="action-btn">
                         <i class="action-icon">📞</i>
                         <span>Contacter un médecin</span>
                     </a>
@@ -287,6 +447,66 @@ body {
     font-weight: 500;
 }
 
+/* Listes médicales */
+.medical-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: var(--bg-blue);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.list-label {
+    font-weight: 600;
+    color: var(--text-blue);
+    font-size: 14px;
+}
+
+.list-value {
+    color: var(--primary-blue);
+    font-weight: 500;
+    text-align: right;
+}
+
+/* Groupe sanguin */
+.blood-group-display {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.blood-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background: var(--bg-blue);
+    border-radius: 12px;
+    min-width: 100px;
+}
+
+.blood-label {
+    font-weight: 600;
+    color: var(--text-blue);
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.blood-value {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 18px;
+}
+
 /* Contenu médical */
 .medical-content {
     text-align: center;
@@ -413,6 +633,26 @@ body {
     .info-item .value {
         margin-top: 5px;
         font-size: 14px;
+    }
+    
+    .list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .list-value {
+        margin-top: 5px;
+        text-align: left;
+    }
+    
+    .blood-group-display {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .blood-info {
+        min-width: 80px;
     }
 }
 

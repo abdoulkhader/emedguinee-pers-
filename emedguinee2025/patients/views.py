@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Patient, RendezVous
 from .forms import PriseRendezVousForm
 from medecins.models import ProfilMedecin
+from django.utils.timezone import now
+
 
 # 🟦 1. Tableau de bord patient
 @login_required
@@ -53,8 +55,14 @@ def mes_rendez_vous(request):
 # 🟦 5. Mon dossier médical
 @login_required
 def dossier_medical(request):
-    # À compléter avec les vraies données médicales plus tard
-    return render(request, 'patients/dossier_medical.html')
+    patient = get_object_or_404(Patient, user=request.user)
+    dossier = getattr(patient, 'dossier', None)  # lié par OneToOneField
+
+    return render(request, 'patients/dossier_medical.html', {
+        'user': request.user,
+        'patient': patient,
+        'dossier': dossier,
+    })
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -79,4 +87,74 @@ def modifier_profil_patient(request):
     return render(request, 'patients/modifier_profil_patient.html', {
         'form': form,
         'patient': patient
+    })
+
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from .models import Patient, DossierMedical
+
+@login_required
+def telecharger_dossier(request):
+    # Vérifie que l'utilisateur est un patient
+    patient = get_object_or_404(Patient, user=request.user)
+    dossier = getattr(patient, 'dossier', None)
+
+    # Charge le template HTML du PDF
+    template_path = 'patients/dossier_pdf.html'
+    context = {
+        'patient': patient,
+        'dossier': dossier,
+        'current_date': now(),
+    }
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="mon_dossier_medical.pdf"'
+
+    # Génère le PDF
+    template = get_template(template_path)
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Si erreur dans la génération
+    if pisa_status.err:
+        return HttpResponse('Erreur lors de la génération du PDF', status=500)
+
+    return response
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .forms import ContactMedecinForm
+from .models import Patient
+
+@login_required
+def contacter_medecin(request):
+    patient = Patient.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = ContactMedecinForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.patient = patient
+            message.save()
+            return redirect('patient_dashboard')  # ou page de confirmation
+    else:
+        form = ContactMedecinForm()
+
+    return render(request, 'patients/contacter_medecin.html', {'form': form})
+
+
+from .models import Patient, Consultation
+
+@login_required
+def historique_consultations(request):
+    patient = get_object_or_404(Patient, user=request.user)
+    consultations = Consultation.objects.filter(patient=patient).order_by('-date')
+    return render(request, 'patients/historique_consultations.html', {
+        'patient': patient,
+        'consultations': consultations,
     })

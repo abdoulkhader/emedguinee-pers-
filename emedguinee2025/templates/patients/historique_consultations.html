@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="max-width: 800px; margin: 2rem auto; padding: 0 1rem;">
+    <div style="background: #e0f2ff; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; display: flex; align-items: center;">
+        <span style="font-size: 2rem; margin-right: 1rem; color: #0ea5e9;">🏥</span>
+        <h2 style="margin: 0; color: #0284c7; font-weight: 600;">Historique des consultations</h2>
+    </div>
+    
+    {% if consultations %}
+        {% for c in consultations %}
+        <div style="background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 1rem; border-left: 4px solid #0ea5e9;">
+            <div style="padding: 1rem; border-bottom: 1px solid #f0f9ff; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 600; color: #0284c7;">{{ c.date }}</span>
+                <span style="background: #0ea5e9; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.9rem;">{{ c.motif }}</span>
+            </div>
+            <div style="padding: 1rem;">
+                <p style="margin: 0.5rem 0; color: #334155;"><strong style="color: #0284c7;">Médecin:</strong> Dr {{ c.medecin.get_full_name }}</p>
+                <p style="margin: 0.5rem 0; color: #64748b;"><strong style="color: #0284c7;">Notes:</strong> {{ c.notes }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div style="background: #f0f9ff; border: 2px dashed #bae6fd; border-radius: 10px; padding: 3rem 1rem; text-align: center;">
+            <span style="font-size: 3rem; color: #bae6fd;">📋</span>
+            <p style="color: #64748b; margin-top: 1rem;">Aucune consultation enregistrée</p>
+        </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'patient_dashboard' %}" style="display: inline-block; background: #64748b; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">Retour au tableau de bord</a>
+    </div>
+</div>
+{% endblock %}

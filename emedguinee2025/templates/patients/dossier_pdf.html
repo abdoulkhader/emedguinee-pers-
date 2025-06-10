@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dossier Médical - {{ patient.user.get_full_name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; margin: 20px; color: #333; }
+        .header { text-align: center; background: linear-gradient(135deg, #e0f2ff, #bae6fd); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { color: #0ea5e9; margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0; color: #0369a1; }
+        .section { background: #f8fafc; border-left: 4px solid #0ea5e9; padding: 12px; margin-bottom: 15px; }
+        .section h2 { color: #0ea5e9; margin: 0 0 10px 0; font-size: 16px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .field { margin-bottom: 8px; }
+        .label { font-weight: bold; color: #1e40af; }
+        .value { color: #475569; }
+        .list-item { padding: 5px 0; border-bottom: 1px solid #e2e8f0; }
+        .footer { text-align: center; margin-top: 30px; font-size: 10px; color: #64748b; }
+    </style>
+</head>
+<body>
+    <!-- En-tête -->
+    <div class="header">
+        <h1>🏥 e_medGuinée</h1>
+        <p><strong>Dossier Médical Patient</strong></p>
+        <p>{{ patient.user.get_full_name }} | Généré le {{ current_date|date:"d/m/Y à H:i" }}</p>
+
+    </div>
+
+    <!-- Informations personnelles -->
+    <div class="section">
+        <h2>👤 Informations Personnelles</h2>
+        <div class="info-grid">
+            <div class="field"><span class="label">Nom complet:</span> <span class="value">{{ patient.user.get_full_name }}</span></div>
+            <div class="field"><span class="label">Date de naissance:</span> <span class="value">{{ patient.date_naissance|date:"d/m/Y" }}</span></div>
+            <div class="field"><span class="label">Sexe:</span> <span class="value">{{ patient.sexe }}</span></div>
+            <div class="field"><span class="label">Groupe sanguin:</span> <span class="value">{{ patient.groupe_sanguin|default:"Non renseigné" }}</span></div>
+            <div class="field"><span class="label">Téléphone:</span> <span class="value">{{ patient.telephone }}</span></div>
+            <div class="field"><span class="label">Email:</span> <span class="value">{{ patient.user.email }}</span></div>
+        </div>
+    </div>
+
+    <!-- Allergies -->
+    <div class="section">
+        <h2>⚠️ Allergies</h2>
+        {% if patient.allergies.all %}
+            {% for allergie in patient.allergies.all %}
+                <div class="list-item"><strong>{{ allergie.nom }}</strong> - {{ allergie.reaction }}</div>
+            {% endfor %}
+        {% else %}
+            <p class="value">Aucune allergie connue</p>
+        {% endif %}
+    </div>
+
+    <!-- Antécédents -->
+    <div class="section">
+        <h2>📋 Antécédents Médicaux</h2>
+        <div class="field"><span class="label">Antécédents familiaux:</span> <span class="value">{{ patient.antecedents_familiaux|default:"Non renseignés" }}</span></div>
+        <div class="field"><span class="label">Antécédents personnels:</span> <span class="value">{{ patient.antecedents_personnels|default:"Non renseignés" }}</span></div>
+    </div>
+
+    <!-- Traitements -->
+    <div class="section">
+        <h2>💊 Traitements en Cours</h2>
+        {% if patient.traitements.all %}
+            {% for traitement in patient.traitements.all %}
+                <div class="list-item"><strong>{{ traitement.nom }}</strong> - {{ traitement.posologie }} ({{ traitement.duree }})</div>
+            {% endfor %}
+        {% else %}
+            <p class="value">Aucun traitement en cours</p>
+        {% endif %}
+    </div>
+
+    <!-- Constantes vitales -->
+    <div class="section">
+        <h2>🩺 Constantes Vitales</h2>
+        <div class="info-grid">
+            <div class="field"><span class="label">Tension artérielle:</span> <span class="value">{{ patient.tension_arterielle|default:"Non mesurée" }}</span></div>
+            <div class="field"><span class="label">Fréquence cardiaque:</span> <span class="value">{{ patient.frequence_cardiaque|default:"Non mesurée" }}</span></div>
+            <div class="field"><span class="label">Température:</span> <span class="value">{{ patient.temperature|default:"Non mesurée" }}</span></div>
+            <div class="field"><span class="label">Poids:</span> <span class="value">{{ patient.poids|default:"Non renseigné" }} kg</span></div>
+        </div>
+    </div>
+
+    <!-- Contact d'urgence -->
+    <div class="section">
+        <h2>🚨 Contact d'Urgence</h2>
+        <div class="field"><span class="label">Nom:</span> <span class="value">{{ patient.contact_urgence_nom|default:"Non renseigné" }}</span></div>
+        <div class="field"><span class="label">Téléphone:</span> <span class="value">{{ patient.contact_urgence_telephone|default:"Non renseigné" }}</span></div>
+        <div class="field"><span class="label">Relation:</span> <span class="value">{{ patient.contact_urgence_lien|default:"Non précisée" }}</span></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Document confidentiel - e_medGuinée © 2025 | Système de gestion médicale</p>
+    </div>
+</body>
+</html>
